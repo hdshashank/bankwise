@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload PDF</title>
+    <title>Upload File</title>
 </head>
 <body>
-    <h2>Upload PDF File</h2>
+    <h2>Upload PDF or JPEG File</h2>
     <form id="upload-form">
-        <input type="file" id="pdf-file" accept="application/pdf" required>
+        <input type="file" id="file-input" accept="application/pdf, image/jpeg" required>
         <button type="submit">Upload</button>
     </form>
     <p id="status"></p>
@@ -17,15 +17,15 @@
         document.getElementById("upload-form").addEventListener("submit", async function(event) {
             event.preventDefault();
             
-            let fileInput = document.getElementById("pdf-file");
+            let fileInput = document.getElementById("file-input");
             let file = fileInput.files[0];
             if (!file) {
-                alert("Please select a PDF file.");
+                alert("Please select a PDF or JPEG file.");
                 return;
             }
 
             let formData = new FormData();
-            formData.append("pdf", file);
+            formData.append("file", file);
 
             let status = document.getElementById("status");
             status.innerText = "Uploading...";
