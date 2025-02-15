@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload PDF</title>
+</head>
+<body>
+    <h2>Upload PDF File</h2>
+    <form id="upload-form">
+        <input type="file" id="pdf-file" accept="application/pdf" required>
+        <button type="submit">Upload</button>
+    </form>
+    <p id="status"></p>
+
+    <script>
+        document.getElementById("upload-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            let fileInput = document.getElementById("pdf-file");
+            let file = fileInput.files[0];
+            if (!file) {
+                alert("Please select a PDF file.");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("pdf", file);
+
+            let status = document.getElementById("status");
+            status.innerText = "Uploading...";
+
+            try {
+                let response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result = await response.json();
+                if (response.ok) {
+                    status.innerText = "File uploaded successfully! URL: " + result.url;
+                } else {
+                    status.innerText = "Error: " + result.error;
+                }
+            } catch (error) {
+                status.innerText = "Upload failed.";
+            }
+        });
+    </script>
+</body>
+</html>
